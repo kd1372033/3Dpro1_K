@@ -1,15 +1,18 @@
 ﻿#pragma once
 
-class GameScene
+#include "../BaseScene/BaseScene.h"
+
+
+class GameScene : public BaseScene
 {
 public:
 	GameScene(){}
 	~GameScene(){}
 	
-	void Init();
-	void Update();
-	void DrawSprite();
-	void Release();
+	void Init()			override;
+	void Update()		override;
+	void DrawSprite()	override;
+	void Release()		override;
 
 private:
 

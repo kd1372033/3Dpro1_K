@@ -68,8 +68,9 @@ void Application::PreUpdate()
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 void Application::Update()
 {
-	//m_titleScene->Update();
-	m_gameScene->Update();
+	// 親クラスのポインタで子クラスを操作することを
+	// 「ポリモーフィズム」と呼ぶ
+	m_nowScene->Update();
 }
 
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
@@ -177,8 +178,7 @@ void Application::DrawSprite()
 		// 座標と拡縮は行列不要！！！
 		// 回転は必要！！！
 		// おためし3
-		//m_titleScene->DrawSprite();
-		m_gameScene->DrawSprite();
+		m_nowScene->DrawSprite();
 	}
 	KdShaderManager::Instance().m_spriteShader.End();
 }
@@ -263,10 +263,10 @@ bool Application::Init(int w, int h)
 	// 動的メモリの確保
 //	m_titleScene = new TitleScene();
 	// スマートポインタで動的メモリの確保
-	//m_titleScene = std::make_shared<TitleScene>();
-	//m_titleScene->Init();
-	m_gameScene = std::make_shared<GameScene>();
-	m_gameScene->Init();
+	// 親クラスの子クラスの領域のアドレスを代入している
+	m_nowScene = std::make_shared<TitleScene>();
+	// ↑アップキャスト
+	m_nowScene->Init();
 
 	return true;
 }

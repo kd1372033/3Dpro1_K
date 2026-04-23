@@ -1,15 +1,19 @@
 ﻿#pragma once
 
-class TitleScene
+// クラスを継承するときのみインクルード許可！！！
+#include "../BaseScene/BaseScene.h"
+
+class TitleScene : public BaseScene
 {
 public:
 	TitleScene(){}
 	~TitleScene(){}
 	
-	void Init();
-	void Update();
-	void DrawSprite();
-	void Release();
+	// override ･･･ 
+	void Init()			override;
+	void Update()		override;
+	void DrawSprite()	override;
+	void Release()		override;
 
 private:
 

@@ -4,8 +4,7 @@
 // ヘッダー内でインクルード禁止！！！
 
 // 前方宣言
-class TitleScene;
-class GameScene;
+class BaseScene;
 
 //============================================================
 // アプリケーションクラス
@@ -64,9 +63,7 @@ private:
 	//　　　　変数は　　 値　　 が入る
 
 	// スマートポインタ
-	//std::shared_ptr<TitleScene> m_titleScene;
-	std::shared_ptr<GameScene> m_gameScene;
-
+	std::shared_ptr<BaseScene> m_nowScene;
 
 	//=====================================================
 	// シングルトンパターン
