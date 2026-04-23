@@ -1,8 +1,11 @@
 ﻿#pragma once
 
 //#include "Scene/TitleScene/TitleScene.h"
+// ヘッダー内でインクルード禁止！！！
 
+// 前方宣言
 class TitleScene;
+class GameScene;
 
 //============================================================
 // アプリケーションクラス
@@ -10,21 +13,21 @@ class TitleScene;
 //============================================================
 class Application
 {
-// メンバ
+	// メンバ
 public:
 
 	// アプリケーション実行
 	void Execute();
 
 	// アプリケーション終了
-	void End()							{ m_endFlag = true; }
+	void End() { m_endFlag = true; }
 
-	HWND GetWindowHandle()		const	{ return m_window.GetWndHandle(); }
-	int GetMouseWheelValue()	const	{ return m_window.GetMouseWheelVal(); }
+	HWND GetWindowHandle()		const { return m_window.GetWndHandle(); }
+	int GetMouseWheelValue()	const { return m_window.GetMouseWheelVal(); }
 
-	int		GetNowFPS()			const	{ return m_fpsController.m_nowfps; }
-	int		GetMaxFPS()			const	{ return m_fpsController.m_maxFps; }
-	float	GetDeltaTime()		const	{ return m_fpsController.GetDeltaTime(); }
+	int		GetNowFPS()			const { return m_fpsController.m_nowfps; }
+	int		GetMaxFPS()			const { return m_fpsController.m_maxFps; }
+	float	GetDeltaTime()		const { return m_fpsController.GetDeltaTime(); }
 private:
 
 	void KdBeginUpdate();
@@ -56,17 +59,24 @@ private:
 	bool		m_endFlag = false;
 
 	// おためし1
-	TitleScene* m_titleScene = nullptr;
+	//TitleScene* m_titleScene;	// 生ポインタ
+	//ポインタ変数は　アドレス　が入る
+	//　　　　変数は　　 値　　 が入る
 
-//=====================================================
-// シングルトンパターン
-//=====================================================
+	// スマートポインタ
+	//std::shared_ptr<TitleScene> m_titleScene;
+	std::shared_ptr<GameScene> m_gameScene;
+
+
+	//=====================================================
+	// シングルトンパターン
+	//=====================================================
 private:
 	// 
 	Application() {}
 
 public:
-	static Application &Instance(){
+	static Application& Instance() {
 		static Application Instance;
 		return Instance;
 	}

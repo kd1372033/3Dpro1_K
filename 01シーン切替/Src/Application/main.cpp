@@ -1,5 +1,8 @@
 ﻿#include "main.h"
+
+// ヘッダーファイルは必要なcppでインクルードする！！
 #include "Scene/TitleScene/TitleScene.h"
+#include "Scene/GameScene/GameScene.h"
 
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 // エントリーポイント
@@ -65,7 +68,8 @@ void Application::PreUpdate()
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 void Application::Update()
 {
-	m_titleScene->Update();
+	//m_titleScene->Update();
+	m_gameScene->Update();
 }
 
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
@@ -173,7 +177,8 @@ void Application::DrawSprite()
 		// 座標と拡縮は行列不要！！！
 		// 回転は必要！！！
 		// おためし3
-		m_titleScene->DrawSprite();
+		//m_titleScene->DrawSprite();
+		m_gameScene->DrawSprite();
 	}
 	KdShaderManager::Instance().m_spriteShader.End();
 }
@@ -255,8 +260,13 @@ bool Application::Init(int w, int h)
 //	ShowCursor(false);
 
 	// おためし2
-	m_titleScene = new TitleScene();
-	m_titleScene->Init();
+	// 動的メモリの確保
+//	m_titleScene = new TitleScene();
+	// スマートポインタで動的メモリの確保
+	//m_titleScene = std::make_shared<TitleScene>();
+	//m_titleScene->Init();
+	m_gameScene = std::make_shared<GameScene>();
+	m_gameScene->Init();
 
 	return true;
 }
@@ -374,6 +384,10 @@ void Application::Execute()
 // アプリケーション終了
 void Application::Release()
 {
+	// スマートポインタだとdeleteは不要
+	// メモリリーク防止
+//	delete m_titleScene;
+
 	KdInputManager::Instance().Release();
 
 	KdShaderManager::Instance().Release();
@@ -381,9 +395,6 @@ void Application::Release()
 	KdAudioManager::Instance().Release();
 
 	KdDirect3D::Instance().Release();
-
-	delete m_titleScene;
-	m_titleScene = nullptr;
 
 	// ウィンドウ削除
 	m_window.Release();
