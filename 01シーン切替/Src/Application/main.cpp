@@ -1,8 +1,7 @@
 ﻿#include "main.h"
 
 // ヘッダーファイルは必要なcppでインクルードする！！
-#include "Scene/TitleScene/TitleScene.h"
-#include "Scene/GameScene/GameScene.h"
+#include "Scene/SceneManager.h"
 
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 // エントリーポイント
@@ -61,6 +60,7 @@ void Application::KdPostUpdate()
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 void Application::PreUpdate()
 {
+	SceneManager::Instance().PreUpdate();
 }
 
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
@@ -70,7 +70,8 @@ void Application::Update()
 {
 	// 親クラスのポインタで子クラスを操作することを
 	// 「ポリモーフィズム」と呼ぶ
-	m_nowScene->Update();
+	//m_nowScene->Update();
+	SceneManager::Instance().Update();
 }
 
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
@@ -178,7 +179,8 @@ void Application::DrawSprite()
 		// 座標と拡縮は行列不要！！！
 		// 回転は必要！！！
 		// おためし3
-		m_nowScene->DrawSprite();
+		//m_nowScene->DrawSprite();
+		SceneManager::Instance().Draw();
 	}
 	KdShaderManager::Instance().m_spriteShader.End();
 }
@@ -264,9 +266,12 @@ bool Application::Init(int w, int h)
 //	m_titleScene = new TitleScene();
 	// スマートポインタで動的メモリの確保
 	// 親クラスの子クラスの領域のアドレスを代入している
-	m_nowScene = std::make_shared<TitleScene>();
+	//m_nowScene = std::make_shared<TitleScene>();
 	// ↑アップキャスト
-	m_nowScene->Init();
+
+	// 黒崎教はコンストラクタでInit関数を呼ぶので
+	// Init関数は呼ばなくていい
+	//m_nowScene->Init();
 
 	return true;
 }

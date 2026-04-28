@@ -1,5 +1,7 @@
 ﻿#include "TitleScene.h"
 
+#include "../SceneManager.h"
+
 void TitleScene::Init()
 {
 	m_tex.Load("Asset/Textures/title.png");
@@ -14,6 +16,11 @@ void TitleScene::Update()
 	m_alpha += m_delta;
 	if (m_alpha <= 0.5) { m_delta = 0.01f; }
 	else if (m_alpha >= 1) { m_delta = -0.01f; }
+
+	if (GetAsyncKeyState(VK_RETURN) & 0x8000)
+	{
+		SceneManager::Instance().SetNextScene(SceneManager::SceneType::Game);
+	}
 
 }
 

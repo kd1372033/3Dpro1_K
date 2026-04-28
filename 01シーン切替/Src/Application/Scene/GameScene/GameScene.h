@@ -6,9 +6,9 @@
 class GameScene : public BaseScene
 {
 public:
-	GameScene(){}
-	~GameScene(){}
-	
+	GameScene() { Init(); }
+	~GameScene() {}
+
 	void Init()			override;
 	void Update()		override;
 	void DrawSprite()	override;

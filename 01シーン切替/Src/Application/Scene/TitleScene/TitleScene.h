@@ -6,9 +6,9 @@
 class TitleScene : public BaseScene
 {
 public:
-	TitleScene(){}
-	~TitleScene(){}
-	
+	TitleScene() { Init(); }
+	~TitleScene() {}
+
 	// override ･･･ 
 	void Init()			override;
 	void Update()		override;
