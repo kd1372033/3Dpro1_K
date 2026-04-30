@@ -16,4 +16,11 @@ public:
 
 private:
 
+	static const int maxDigits = 10;	//9999999999まで
+
+
+	KdTexture m_tex;
+	// unsigned intなら6万までいける
+	unsigned long m_score = 0;
+	int m_digits[maxDigits] = {};
 };
