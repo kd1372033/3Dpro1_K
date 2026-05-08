@@ -38,6 +38,10 @@ void GameScene::DrawSprite()
 	KdShaderManager::Instance().m_spriteShader.DrawCircle(0,0,100);
 
 	// スコア表示
+	/*
+	i++; 後置インクリメント
+	++i; 前置インクリメント
+	*/
 	for (int i = 0; i < maxDigits; ++i)
 	{
 		Math::Rectangle rc = { 7 * m_digits[i],0,7,10 };
