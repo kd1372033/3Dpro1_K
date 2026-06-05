@@ -1,18 +1,12 @@
-﻿#include "Player.h"
+﻿#include "Enemy.h"
 
 #include "../../Scene/SceneManager.h"
-#include "../Effect/Effect.h"
 
-
-void Player::Init()
+void Enemy::Init()
 {
-	// デバッグ用のポインタを実体化
 	m_pDebugWire = std::make_unique<KdDebugWireFrame>();
 
-	// 実体化
 	m_polygon = std::make_shared<KdSquarePolygon>();
-
-	// テクスチャの設定
 	m_polygon->SetMaterial("Asset/Textures/char.png");
 
 	// 画像を分割
@@ -21,62 +15,57 @@ void Player::Init()
 	// 原点変更(真ん中→真ん中)
 	m_polygon->SetPivot(KdSquarePolygon::PivotType::Center_Bottom);
 
-	m_pos = { -20,2,0 };
+	// 「当てられる側」の処理======
+
+	// 当たり判定を付けたいから実体化
+	m_pCollider = std::make_unique<KdCollider>();
+	// 当たり判定用に球登録
+	m_pCollider->RegisterCollisionShape
+	(
+		"EnemyCollision",				// 識別用の名前
+		{ 0,0.5,0 },					// 球の中心座標
+		0.2,							// 球の半径
+		KdCollider::Type::TypeDamage	//当たり判定の種類
+	);
+	// ============================
 }
 
-void Player::Update()
+void Enemy::Update()
 {
-	// アニメーション 24 25 24 26
-	int Run[4] = { 24, 25, 24, 26 };
-	m_polygon->SetUVRect(Run[(int)m_anime]);
-	m_anime += 0.2;
+	// 当たり判定を見える化
+	m_pDebugWire->AddDebugSphere(m_pos + Math::Vector3(0, 0.5, 0), 0.2f, kRedColor);
+
+	int Walk[4] = { 3, 4, 3, 5 };
+	m_polygon->SetUVRect(Walk[(int)m_anime]);
+	m_anime += 0.1;
 	if (m_anime >= 4)
 	{
 		m_anime = 0;
 	}
 
-	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
-	{
-		m_pos.x -= 0.05f;
-	}
-	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
-	{
-		m_pos.x += 0.05f;
-	}
+	// 移動処理
+	m_pos.x += m_speed * m_dir;
+	m_goal += m_speed;
 
-	//攻撃
-	if (GetAsyncKeyState('Z') & 0x8000)
+	if (m_goal >= 5.0f)
 	{
-		// エフェクト追加
-		std::shared_ptr<Effect> effect;
-		effect = std::make_shared<Effect>();
-		effect->SetPos(m_pos + Math::Vector3(0.5f, 0.5f, 0.0f));
-		SceneManager::Instance().AddObject(effect);
-		//						↑m_objList.push_back(effect)と同等
+		m_dir *= -1;
+		m_goal = 0;
 	}
 
 
-	// ジャンプ処理
-	if (GetAsyncKeyState(VK_UP) & 0x8000)
-	{
-		// ジャンプ力
-		m_gravity = -0.1;
-	}
+	// 落下処理
 	m_pos.y -= m_gravity;
 	m_gravity += 0.005f;
 
 	Math::Matrix transMat = Math::Matrix::CreateTranslation(m_pos);
 
+	// 行列合成　←こいつは絶対Updateの最後!!!!!
 	m_mWorld = transMat;
 }
 
-void Player::PostUpdate()
+void Enemy::PostUpdate()
 {
-	// 当たり判定(レイ判定)
-
-	// 当たり判定を実装するときは「当たる側」「当たられる側」が存在する
-	// プレイヤーは「当たる側」の判定
-
 	// ==============
 	//	レイ判定
 	// ==============
@@ -133,9 +122,9 @@ void Player::PostUpdate()
 		m_gravity = 0;	//重力を無効化
 	}
 
-	// =====================
+	// ==============
 	//	球(スフィア)判定
-	// =====================
+	// ==============
 	// 球判定用の変数を作成
 	KdCollider::SphereInfo sphere;
 	// 球の中心座標
@@ -187,10 +176,14 @@ void Player::PostUpdate()
 		m_pos += hitDir * maxOverLap;
 		//		↑当たった方向(方向ベクトルは長さ１)
 	}
-
 }
 
-void Player::DrawLit()
+void Enemy::DrawLit()
 {
 	KdShaderManager::Instance().m_StandardShader.DrawPolygon(*m_polygon, m_mWorld);
+}
+
+void Enemy::OnHit()
+{
+	m_isExpired = true;
 }
