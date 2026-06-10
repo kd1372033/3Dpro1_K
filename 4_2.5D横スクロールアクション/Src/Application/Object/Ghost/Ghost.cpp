@@ -41,7 +41,13 @@ void Ghost::Update()
 }
 
 void Ghost::DrawLit()
-{
-	Math::Color color = { 1,1,1,0.25f };
+{	
+	// ブレンディング方法を変える								↓加算
+	KdShaderManager::Instance().ChangeBlendState(KdBlendState::Add);
+
+	Math::Color color = { 1,1,1,0.5f };
 	KdShaderManager::Instance().m_StandardShader.DrawPolygon(*m_polygon, m_mWorld, color);
+
+	// 表示したら元に戻す
+	KdShaderManager::Instance().ChangeBlendState(KdBlendState::Alpha);
 }

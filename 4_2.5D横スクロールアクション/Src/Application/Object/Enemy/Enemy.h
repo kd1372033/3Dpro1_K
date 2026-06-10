@@ -11,6 +11,7 @@ public:
 	void PostUpdate() override;
 	void DrawLit() override;
 
+	void OutroUpdate();
 	void OnHit() override;
 
 	//			↓コンスト参照

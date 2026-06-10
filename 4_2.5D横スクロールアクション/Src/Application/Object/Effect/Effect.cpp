@@ -35,6 +35,9 @@ void Effect::Update()
 
 void Effect::PostUpdate()
 {
+	// 早期リターン　最初の時だけ当たり判定を付ける
+	if (m_anime >= 4) return;
+
 	// ================
 	// 球判定
 	// ================
@@ -50,8 +53,8 @@ void Effect::PostUpdate()
 	// 全オブジェクトと当たり判定を行う
 	for (auto& obj : SceneManager::Instance().GetObjList())
 	{
-		
-// 球と当たり判定する！！			↓当たったオブジェクトの情報を格納するリスト
+
+		// 球と当たり判定する！！		↓当たったオブジェクトの情報を格納するリスト
 		if (obj->Intersects(sphere, nullptr) == true)
 		{						//	↑当たったかどうかを調べるだけならいらない
 			//ここに入ってくるものは全て敵
@@ -62,6 +65,11 @@ void Effect::PostUpdate()
 }
 
 void Effect::DrawLit()
+{
+	KdShaderManager::Instance().m_StandardShader.DrawPolygon(*m_polygon, m_mWorld);
+}
+
+void Effect::DrawBright()
 {
 	KdShaderManager::Instance().m_StandardShader.DrawPolygon(*m_polygon, m_mWorld);
 }

@@ -29,7 +29,7 @@ void Player::Update()
 	// アニメーション 24 25 24 26
 	int Run[4] = { 24, 25, 24, 26 };
 	m_polygon->SetUVRect(Run[(int)m_anime]);
-	m_anime += 0.2;
+	//m_anime += 0.2;
 	if (m_anime >= 4)
 	{
 		m_anime = 0;
@@ -190,6 +190,10 @@ void Player::PostUpdate()
 
 }
 
+void Player::GenerateDepthMapFromLight()
+{
+	KdShaderManager::Instance().m_StandardShader.DrawPolygon(*m_polygon, m_mWorld);
+}
 void Player::DrawLit()
 {
 	KdShaderManager::Instance().m_StandardShader.DrawPolygon(*m_polygon, m_mWorld);

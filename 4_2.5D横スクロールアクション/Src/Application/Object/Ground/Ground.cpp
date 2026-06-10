@@ -31,5 +31,25 @@ void Ground::Init()
 
 void Ground::DrawLit()
 {
+	static float d = 0;//書くときはメンバー変数で
+	if (GetAsyncKeyState('Q') & 0x8000)
+	{
+		d += 0.01;
+		if (d > 1)
+		{
+			d = 1;
+		}
+	}
+	if (GetAsyncKeyState('W') & 0x8000)
+	{
+		d -= 0.01;
+		if (d < 0)
+		{
+			d = 0;
+		}
+	}
+	//ディゾルブ(溶ける)									 ↓0～1
+	KdShaderManager::Instance().m_StandardShader.SetDissolve(d);
+
 	KdShaderManager::Instance().m_StandardShader.DrawModel(*m_model, m_mWorld);
 }

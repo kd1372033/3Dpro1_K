@@ -32,6 +32,15 @@ void Enemy::Init()
 
 void Enemy::Update()
 {
+
+	/*if (m_outroFlg)
+	{
+		OutroUpdate();
+		return;
+	}*/
+	//ポイントライト(ＭＡＸ100個まで！！！)								↓色	↓半径	↓位置
+	KdShaderManager::Instance().WorkAmbientController().AddPointLight({ 3,0,0 }, 5, m_pos + Math::Vector3{ 0,0.5,0 });
+
 	// 当たり判定を見える化
 	m_pDebugWire->AddDebugSphere(m_pos + Math::Vector3(0, 0.5, 0), 0.2f, kRedColor);
 
@@ -183,7 +192,13 @@ void Enemy::DrawLit()
 	KdShaderManager::Instance().m_StandardShader.DrawPolygon(*m_polygon, m_mWorld);
 }
 
+void Enemy::OutroUpdate()
+{
+
+}
+
 void Enemy::OnHit()
 {
+	//m_OutroFlg=true;を作っておく
 	m_isExpired = true;
 }

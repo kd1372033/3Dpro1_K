@@ -10,6 +10,7 @@ public:
 	void Update() override;
 	void PostUpdate() override;
 	void DrawLit() override;
+	void DrawBright() override;
 
 private:
 
