@@ -36,6 +36,13 @@ void GameScene::Event()
 	Math::Vector3 camPos = { 0,1,-5 };
 	Math::Matrix transMat = Math::Matrix::CreateTranslation(camPos + m_player->GetPos());
 	m_camera->SetCameraMatrix(transMat);
+
+	// 被写界深度	  ↓ピントを合わせる距離
+	//m_camera->SetFocus(5, 3, 8);//←奥
+	//					  ↑手前
+
+	// 画面全体をちょっとぼかして光らせる(夢の中)
+	KdShaderManager::Instance().m_postProcessShader.SetBrightThreshold(0.9);
 }
 
 void GameScene::Init()
@@ -48,9 +55,9 @@ void GameScene::Init()
 	*/
 
 	// Fog（霧）													　↓距離　↓高さ
-	KdShaderManager::Instance().WorkAmbientController().SetFogEnable(false, true);
+	KdShaderManager::Instance().WorkAmbientController().SetFogEnable(true, false);
 	// 距離フォグの設定													↓色　　	↓密度
-	//KdShaderManager::Instance().WorkAmbientController().SetDistanceFog({ 0,0,0 }, 0.1);
+	KdShaderManager::Instance().WorkAmbientController().SetDistanceFog({ 0,0,0 }, 0.1);
 	// 高さフォグの設定													↓色　 ↓上↓下↓距離
 	KdShaderManager::Instance().WorkAmbientController().SetheightFog({ 1,1,1 }, 2, -2, 0);
 
