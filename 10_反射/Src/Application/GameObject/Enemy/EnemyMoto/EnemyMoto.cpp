@@ -34,7 +34,7 @@ void EnemyMoto::Update()
 
 	}
 	//ターゲットへの方向ベクトルを算出
-	//移動 ゴイスー
+	//移動
 	Math::Vector3 targetDir = targetPos - m_pos;
 
 	//targetDirは正規化前に自分とターゲットの距離がとれる

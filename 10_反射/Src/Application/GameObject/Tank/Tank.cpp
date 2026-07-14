@@ -128,7 +128,20 @@ void Tank::Update()
 			//adsしてない
 			dir = m_mWorld.Backward();
 		}
-		bullet->SetParam(pos, dir, 3.0f);
+
+		// 弾にバラつきを持たす（発射方向を少しずらす＝ベクトルの変形）
+		float x = DirectX::XMConvertToRadians(rand() % 5 - 2);
+		float y = DirectX::XMConvertToRadians(rand() % 5 - 2);
+		float z = DirectX::XMConvertToRadians(rand() % 5 - 2);
+		// XYZ回転（new）
+		Math::Matrix rotmat = Math::Matrix::CreateFromYawPitchRoll(y, x, z);
+		// Yaw:Y		Pitch:X		Roll:Z ロールケーキはZ回転
+
+		// ベクトル変形
+		dir = Math::Vector3::TransformNormal(dir, rotmat);
+
+		// 発射
+		bullet->SetParam(pos, dir, 1.0f);
 		//戦車が向いている方向
 		SceneManager::Instance().AddObject(bullet);
 	}
@@ -230,6 +243,7 @@ void Tank::Update()
 			
 		}
 	}
+
 	//移動処理
 	m_pos += dir * 0.3f;
 	//座標
