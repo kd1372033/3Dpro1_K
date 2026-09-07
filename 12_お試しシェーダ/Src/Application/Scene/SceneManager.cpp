@@ -28,19 +28,6 @@ void SceneManager::PostUpdate()
 void SceneManager::PreDraw()
 {
 	m_currentScene->PreDraw();
-
-	// 9/1追加
-	//レンダーターゲット処理
-	{
-		//描画先をクリアし、切り替える
-		ChangeRenderTarget();
-
-		//切り替えた先でゲーム画面に描画
-		m_currentScene->Draw();
-
-		//元に戻す
-		UndoRenderTarget();
-	}
 }
 
 void SceneManager::Draw()
@@ -66,20 +53,6 @@ const std::list<std::shared_ptr<KdGameObject>>& SceneManager::GetObjList()
 void SceneManager::AddObject(const std::shared_ptr<KdGameObject>& _obj)
 {
 	m_currentScene->AddObject(_obj);
-}
-
-// 9/1追加
-void SceneManager::ChangeRenderTarget()
-{
-	m_rtPack.ClearTexture();
-	m_rtChanger.ChangeRenderTarget(m_rtPack);
-}
-
-// 9/1追加
-void SceneManager::UndoRenderTarget()
-{
-	m_rtChanger.UndoRenderTarget();
-
 }
 
 void SceneManager::ChangeScene(SceneType _sceneType)

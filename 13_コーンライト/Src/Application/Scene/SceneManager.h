@@ -34,17 +34,6 @@ public :
 	// 現在のシーンにオブジェクトを追加
 	void AddObject(const std::shared_ptr<KdGameObject>& _obj);
 
-	// 9/1追加
-	//レンダーターゲット関係
-	void ChangeRenderTarget();
-	void UndoRenderTarget();
-
-	//現在の画面を取得する
-	const std::shared_ptr<KdTexture>& GetRenderTargetTexture() const
-	{
-		return m_rtPack.m_RTTexture;
-	}
-
 private :
 
 	// マネージャーの初期化
@@ -53,11 +42,6 @@ private :
 	{
 		// 開始シーンに切り替え
 		ChangeScene(m_currentSceneType);
-
-		//レンダーターゲット先初期
-		//                          幅　, 高さ, Zバッファ有無
-		m_rtPack.CreateRenderTarget(1280, 720,true);
-
 	}
 
 	// シーン切り替え関数
@@ -71,12 +55,6 @@ private :
 	
 	// 次のシーンの種類を保持している変数
 	SceneType m_nextSceneType = m_currentSceneType;
-
-	// 9/1追加
-	//レンダーターゲット切り替え用
-	KdRenderTargetPack m_rtPack;//テクスチャ・Zバッファ・ビューポート
-	KdRenderTargetChanger m_rtChanger; //描画先を切り替えるクラス
-
 
 private:
 
