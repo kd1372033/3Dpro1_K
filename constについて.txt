@@ -1,0 +1,72 @@
+ const修飾子
+変数やポインタの値を読み取り専用(書き換え不可)にするためのキーワード。
+意図しない値の書き換えを防ぎ、コンパイル時にエラーを検出できるようにする。
+
+ 前const（関数の前にconst）がついているもの
+ const int GetAdd(int a,int b)
+ {
+	int c = a + b;
+	return c;
+ }
+ 戻り値が定数化するので、戻り値を変更することができない
+ 
+ 中const（関数の引数にconst）がついているもの
+ int GetAdd2(const int a,const int b)
+ {
+	int c = a + b;
+	return c;
+ }
+ 引数が定数化するので、引数を変更することができない
+ 
+ 後ろconst（関数の後にconst）がついているもの
+ int GetAdd3(int a,int b) const
+ {
+	int c = a + b;
+	return c;
+ }
+ メンバー変数が定数化するので、メンバー変数を変更することができない
+ チーム制作で後ろconstをつけることが多いのは、
+ メンバー変数を変更することができないので、バグを防ぐことができるから
+ 
+なんでもかんでもconstをつける人
+const void SetPos(const Math::Vector3 pos)const;
+戻り値がないのに前コンストをしている
+セッター（値を渡すだけ）なのにあとコンストをしている
+
+ ＆（参照）について
+ 別名操作ができる
+int *p;
+int a;
+p = &a;	// aのアドレス
+
+int a = 10;
+int b = a;	// aの値をbにコピーする
+b += 10;		// bの値を変更するが、aの値は変更されない
+int& c = a;	// aの別名をcにする
+c += 10;		// cの値を変更すると、aの値も変更される
+
+int a;
+int b;
+int& c;
+b = a;	// コピー
+c = a;	// コピーされない
+
+// 黒崎教
+Math::Vector3 a;
+Math::Vector3 b;
+Math::Vector3& tmp;
+b = a;	// コピーコンストラクタ
+tmp= a;
+
+// const & (コンスト参照)よく引数で使われている
+読み取り専用のデータとして取り扱う(コピー×　変更×)
+
+
+
+
+
+
+
+
+
+
